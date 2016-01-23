@@ -2,7 +2,7 @@ package Ch8_Trees;
 
 public class LinkedBinaryTree<E> {
 	
-	private static class Node<E> {
+	protected static class Node<E> {
 		private E element;
 		private Node<E> parent;
 		private Node<E> left;
@@ -170,6 +170,40 @@ public class LinkedBinaryTree<E> {
 		parent.setParent(parent);
 		return temp;
 		}
+
+	public void postOrder(Node<E> root){
+		// Visit left subtree
+		// Visit right subtree
+		// Visit root
+		if (root==null)
+			return;
+		postOrder(root.getLeft());
+		postOrder(root.getRight());
+
+		System.out.println(root.getElement());
+	}
+
+	public void inOrder(Node<E> root){
+		// Visit left subtree
+		// Visit root
+		// Visit right subtree
+		if (root==null)
+			return;
+		inOrder(root.getLeft());
+		System.out.println(root.getElement());
+		inOrder(root.getRight());
+	}
+
+	public void preOrder(Node<E> root){
+		// Visit root
+		// Visit left
+		// Visit right
+		if (root==null)
+			return;
+		System.out.println(root.getElement());
+		preOrder(root.getLeft());
+		preOrder(root.getRight());
+	}
 }
 	
 
