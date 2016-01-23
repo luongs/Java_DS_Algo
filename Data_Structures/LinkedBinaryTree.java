@@ -1,5 +1,8 @@
 package Ch8_Trees;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class LinkedBinaryTree<E> {
 	
 	protected static class Node<E> {
@@ -204,6 +207,30 @@ public class LinkedBinaryTree<E> {
 		System.out.println(root.getElement());
 		preOrder(root.getLeft());
 		preOrder(root.getRight());
+	}
+
+	public void breadthFirstSearch(Node<E> root){
+		// Visit each node by level
+		// Use queue
+		Queue<Node<E>> q = new LinkedList<Node<E>>();
+		// First add root to queue
+		q.add(root);
+
+		while (!q.isEmpty()){
+			Node<E> value = q.remove();
+
+			System.out.println(value.getElement());
+
+			// Typically use children iterable but method is not available
+			if (numChildren(value)== 2){
+				q.add(value.getLeft());
+				q.add(value.getRight());
+			}
+			else if (value.getLeft()!=null)
+				q.add(value.getLeft());
+			else if (value.getRight() !=null)
+				q.add(value.getRight());
+		}
 	}
 }
 	
