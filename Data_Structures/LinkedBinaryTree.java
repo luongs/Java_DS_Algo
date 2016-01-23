@@ -194,6 +194,7 @@ public class LinkedBinaryTree<E> {
 		inOrder(root.getRight());
 	}
 
+	// Preorder has same output as Depth First Search
 	public void preOrder(Node<E> root){
 		// Visit root
 		// Visit left
