@@ -1,5 +1,7 @@
 package Ch6_Stack_Queues;
 
+import java.util.EmptyStackException;
+
 public class Stack<E> {
 	private class Node<E> {
 		private Node<E> next;
@@ -37,8 +39,8 @@ public class Stack<E> {
 	}
 	
 	public E pop(){
-		if (head==null)
-			return null;
+		if (isEmpty())
+			throw new EmptyStackException();
 		E result = head.getData();
 		head = head.getNext();
 		size--;
