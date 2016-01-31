@@ -22,6 +22,7 @@ public class BST2 {
 
 	/**
 	 * Insert node in binary search tree
+	 * Iterative
 	 * @param tree
 	 * @param newValue
 	 */
@@ -48,6 +49,11 @@ public class BST2 {
 			walker.right = newValue;
 	}
 	
+	/**
+	 * Return minimum key if it exists
+	 * Iterative
+	 * @return
+	 */
 	public int minimum() {
 		Node node = root; 
 		if (root == null)
@@ -60,6 +66,11 @@ public class BST2 {
 		return node.key;
 	}
 	
+	/**
+	 * Return maximum key if it exists
+	 * Iterative
+	 * @return
+	 */
 	public int maximum() {
 		Node node = root; 
 		if (root == null)
@@ -73,6 +84,13 @@ public class BST2 {
 		
 	}
 	
+	/**
+	 * Check if key exists in BST, returns true if exists
+	 * Recursive
+	 * @param key
+	 * @param node
+	 * @return
+	 */
 	public boolean search(int key, Node node){
 
 		// either tree is empty or key was not found
@@ -90,6 +108,7 @@ public class BST2 {
 	/**
 	 * Print inorder traversal
 	 * Visit left, root, right
+	 * Recursive
 	 * @param node
 	 */
 	public void inOrder(Node node) {
@@ -103,6 +122,7 @@ public class BST2 {
 	/**
 	 * Print preorder traversal (each node as its passed) 
 	 * Visit Root - Left - Right
+	 * Recursive
 	 * @param node
 	 */
 	public void preOrder(Node node){
@@ -117,6 +137,7 @@ public class BST2 {
 	/**
 	 * Print postorder traversal 
 	 * Visit left, right, root
+	 * Recursive
 	 * @param node
 	 */
 	public void postOrder(Node node){
