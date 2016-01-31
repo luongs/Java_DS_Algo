@@ -48,6 +48,31 @@ public class BST2 {
 			walker.right = newValue;
 	}
 	
+	public int minimum() {
+		Node node = root; 
+		if (root == null)
+			return -1;
+
+		// Go to node before leftmost
+		while(node.left !=null) 
+			node = node.left;
+		
+		return node.key;
+	}
+	
+	public int maximum() {
+		Node node = root; 
+		if (root == null)
+			return -1;
+		
+		// Go to node before rightmost
+		while (node.right != null)
+			node = node.right;
+		
+		return node.key;
+		
+	}
+	
 	public boolean search(int key, Node node){
 
 		// either tree is empty or key was not found
@@ -120,8 +145,10 @@ public class BST2 {
 		//tree.postOrder(root);
 		//tree.inOrder(root);
 		
-		System.out.print("Search: "+tree.search(12, root));
-
+		System.out.println("Search: "+tree.search(12, root));
+		System.out.println("Minimum is "+tree.minimum());
+		System.out.println("Maximum is "+tree.maximum());
+		
 	}
 
 }
