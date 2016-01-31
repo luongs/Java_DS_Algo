@@ -48,6 +48,38 @@ public class BST2 {
 			walker.right = newValue;
 	}
 	
+	public boolean search(int key, Node node){
+
+		// either tree is empty or key was not found
+		if (node==null)
+			return false;
+		if (key==node.key)
+			return true; 
+		
+		if (key<node.key)
+			return search(key, node.left);
+		else 	// key > node.key
+			return search(key, node.right);
+	}
+	
+	/**
+	 * Print inorder traversal
+	 * Visit left, root, right
+	 * @param node
+	 */
+	public void inOrder(Node node) {
+		if (node==null)
+			return;
+		inOrder(node.left);
+		System.out.println(node);
+		inOrder(node.right);
+	}
+	
+	/**
+	 * Print preorder traversal (each node as its passed) 
+	 * Visit Root - Left - Right
+	 * @param node
+	 */
 	public void preOrder(Node node){
 		if (node == null)
 			return;
@@ -57,21 +89,38 @@ public class BST2 {
 		preOrder(node.right);
 	}
 	
+	/**
+	 * Print postorder traversal 
+	 * Visit left, right, root
+	 * @param node
+	 */
+	public void postOrder(Node node){
+		if (node==null)
+			return; 
+		postOrder(node.left);
+		postOrder(node.right);
+		System.out.println(node);
+	}
+	
 
 	public static void main(String[] args) {
 		BST2 tree = new BST2();
 		tree.insert(tree, 12);
 		tree.insert(tree, 5);
+		tree.insert(tree, 18);
+		tree.insert(tree, 2);
+		tree.insert(tree, 15);
+		tree.insert(tree, 9);
 		tree.insert(tree, 19);
 		tree.insert(tree, 13);
 		tree.insert(tree, 17);
-		tree.insert(tree, 15);
-		tree.insert(tree, 2);
-		tree.insert(tree, 9);
-		tree.insert(tree, 18);
 		
 		Node root = tree.root;
-		tree.preOrder(root);
+		// tree.preOrder(root);
+		//tree.postOrder(root);
+		//tree.inOrder(root);
+		
+		System.out.print("Search: "+tree.search(12, root));
 
 	}
 
