@@ -5,9 +5,11 @@ public class BST2 {
 	private class Node {
 		Node left; 
 		Node right;
+		Node parent;
 		int key; 
 		
-		public Node(Node left, Node right, int key) {
+		public Node(Node parent, Node left, Node right, int key) {
+			this.parent = parent;
 			this.left = left;
 			this.right = right;
 			this.key = key;
@@ -27,7 +29,7 @@ public class BST2 {
 	 * @param newValue
 	 */
 	public void insert(BST2 tree, int newKey){
-		Node newValue = new Node(null, null, newKey);
+		Node newValue = new Node(null ,null, null, newKey);
 		Node walker = null;
 		Node runner = tree.root;
 		
@@ -42,11 +44,16 @@ public class BST2 {
 		
 		// This is an empty tree
 		if (walker==null)
+			// parent stays null since its root
 			tree.root = newValue;
-		else if (newValue.key < walker.key)
+		else if (newValue.key < walker.key){
 			walker.left = newValue;
-		else	// place right if newValue key > walker
+			walker.left.parent = walker;
+		}
+		else{	// place right if newValue key > walker
 			walker.right = newValue;
+			walker.right.parent = walker;
+		}
 	}
 	
 	/**
@@ -162,7 +169,7 @@ public class BST2 {
 		tree.insert(tree, 17);
 		
 		Node root = tree.root;
-		// tree.preOrder(root);
+		//tree.preOrder(root);
 		//tree.postOrder(root);
 		//tree.inOrder(root);
 		
