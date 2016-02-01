@@ -57,16 +57,90 @@ public class BST2 {
 	}
 	
 	/**
+	 * Substitutes nodeToRmv with nodeToSubs and updates parent.  
+	 * Helper function to delete()
+	 * @param tree
+	 * @param nodeToRmv
+	 * @param nodeToSubs
+	 */
+	public void transplant(BST2 tree, Node nodeToRmv, Node nodeToSubs){
+		
+		// Substitute when nodeToRmv is root of tree
+		if (nodeToRmv.parent == null)
+			tree.root = nodeToSubs;
+		// Substitute when nodeToRmv is left child of parent
+		else if (nodeToRmv == nodeToRmv.parent.left)
+			nodeToRmv.parent.left = nodeToSubs;
+		// Substitute when nodeToRmv is right child of parent
+		else
+			nodeToRmv.parent.right = nodeToSubs;
+		
+		// Transplant is possible with null values, null will substitute
+		// current node
+		if (nodeToSubs != null)
+			nodeToSubs.parent = nodeToRmv.parent;
+	}
+	
+	/**
+	 * Delete nodeToRmv from tree and connect child nodes to keep bst properties
+	 * Four possible cases. Presence of left and right child at nodeToRmv is trickiest
+	 * Iterative
+	 * @param tree
+	 * @param nodeToRmv
+	 */
+	public void delete(BST2 tree, Node nodeToRmv) {
+
+		//1. nodeToRmv has no left child
+		if (nodeToRmv.left == null)
+			// Replace nodeToRmv with its right child
+			transplant(tree, nodeToRmv, nodeToRmv.right);
+		//2. nodeToRmb has no right child
+		else if (nodeToRmv.right == null)
+			// Replace nodeToRmv with its left child
+			transplant(tree, nodeToRmv, nodeToRmv.left);
+		else	// nodeToRmv has both left and right child 
+		{
+			// Get smallest right side value as substitute for nodeToRmv
+			// This keeps bst property since remaining left children are smaller
+			// and remaining right children are bigger than nodeToSubs
+			Node nodeToSubs = minimum(nodeToRmv.right);
+
+			//3. nodeToSubs is not the found to the right of nodeToRmv
+			// instead it is found on a lower level
+			if (nodeToSubs.parent != nodeToRmv){
+				//replace nodeToSubs with its right child (can be null)
+				//right child is now connected to right node of nodeToRmv
+				transplant(tree, nodeToSubs, nodeToSubs.right);
+				// attach right node of nodeToRmv and its children underneath nodeToSubs
+				nodeToSubs.right = nodeToRmv.right;
+				// set nodeToSubs as parent of nodeToRmr.right
+				nodeToSubs.right.parent = nodeToSubs;
+			}
+			
+			// 4. nodeToSubs is the right child of nodeToRmv
+			// replace nodeToRmv with nodeToSubs
+			transplant(tree, nodeToRmv, nodeToSubs);
+			// attach left children of nodeToRmv to nodeToSubs
+			nodeToSubs.left = nodeToRmv.left;
+			nodeToSubs.left.parent = nodeToSubs;
+			
+			// erase nodeToRmv from tree
+			nodeToRmv.parent = null;
+			nodeToRmv.left = null;
+			nodeToRmv.right = null;
+			nodeToRmv.key = -1;
+		}
+			
+	}
+	
+	/**
 	 * Return minimum node if it exists
 	 * Iterative
 	 * @return
 	 */
-	public Node minimum() {
-		Node node = root; 
-		if (root == null)
-			return null;
-
-		// Go to node before leftmost
+	public Node minimum(Node node) {
+		
+		// Save node before leftmost
 		while(node.left !=null) 
 			node = node.left;
 		
@@ -78,12 +152,9 @@ public class BST2 {
 	 * Iterative
 	 * @return
 	 */
-	public Node maximum() {
-		Node node = root; 
-		if (root == null)
-			return null;
-		
-		// Go to node before rightmost
+	public Node maximum(Node node) {
+
+		// Save node before rightmost
 		while (node.right != null)
 			node = node.right;
 		
@@ -98,13 +169,13 @@ public class BST2 {
 	 * @param node
 	 * @return
 	 */
-	public boolean search(int key, Node node){
+	public Node search(int key, Node node){
 
 		// either tree is empty or key was not found
 		if (node==null)
-			return false;
+			return null;
 		if (key==node.key)
-			return true; 
+			return node; 
 		
 		if (key<node.key)
 			return search(key, node.left);
@@ -169,13 +240,14 @@ public class BST2 {
 		tree.insert(tree, 17);
 		
 		Node root = tree.root;
-		//tree.preOrder(root);
+		tree.delete(tree, tree.search(15, root));
+		tree.preOrder(root);
 		//tree.postOrder(root);
 		//tree.inOrder(root);
 		
-		System.out.println("Search: "+tree.search(12, root));
-		System.out.println("Minimum is "+tree.minimum());
-		System.out.println("Maximum is "+tree.maximum());
+		System.out.println("Search: "+tree.search(15, root));
+		System.out.println("Minimum is "+tree.minimum(root));
+		System.out.println("Maximum is "+tree.maximum(root));
 		
 	}
 
