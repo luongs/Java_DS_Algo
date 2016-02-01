@@ -57,37 +57,37 @@ public class BST2 {
 	}
 	
 	/**
-	 * Return minimum key if it exists
+	 * Return minimum node if it exists
 	 * Iterative
 	 * @return
 	 */
-	public int minimum() {
+	public Node minimum() {
 		Node node = root; 
 		if (root == null)
-			return -1;
+			return null;
 
 		// Go to node before leftmost
 		while(node.left !=null) 
 			node = node.left;
 		
-		return node.key;
+		return node;
 	}
 	
 	/**
-	 * Return maximum key if it exists
+	 * Return maximum node if it exists
 	 * Iterative
 	 * @return
 	 */
-	public int maximum() {
+	public Node maximum() {
 		Node node = root; 
 		if (root == null)
-			return -1;
+			return null;
 		
 		// Go to node before rightmost
 		while (node.right != null)
 			node = node.right;
 		
-		return node.key;
+		return node;
 		
 	}
 	
