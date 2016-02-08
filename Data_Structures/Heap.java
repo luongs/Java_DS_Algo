@@ -56,6 +56,17 @@ public class Heap {
 		}
 	}
 	
+	// Reorder unsorted heap into max heap
+	// Starts from 1/2 array in order to start at parents of leaves
+	public void buildMaxHeap(ArrayList<Integer> arr) {
+		// startIndex of last parent
+		int startIndex = (int) Math.ceil(arr.size()/2) - 1;
+		
+		for (int i = startIndex; i>=0; i--){
+			this.downHeap(arr,i);
+		}
+	}
+	
 	
 	public static void main(String[] args) {
 		Heap cur = new Heap();
@@ -74,8 +85,8 @@ public class Heap {
 		System.out.println(heap.toString());
 		
 		// Downheap to correct heap config
-		cur.downHeap(heap, 1);
-		
+		//cur.downHeap(heap, 1);
+		cur.buildMaxHeap(heap);
 		System.out.println("Downheap to fix");
 		System.out.println(heap.toString());
 		
