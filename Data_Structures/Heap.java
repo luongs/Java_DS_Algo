@@ -30,7 +30,8 @@ public class Heap {
 	}
 	
 	// Check and move root value to proper position to maintain heap 
-	// property. Assume heap left and right have kept heap property.  
+	// property. Assume heap left and right have kept heap property. 
+	// O(log n)
 	public void downHeap(ArrayList<Integer> arr, int key) {
 		int leftIndex = left(key);
 		int rightIndex = right(key);
@@ -58,6 +59,7 @@ public class Heap {
 	
 	// Reorder unsorted heap into max heap
 	// Starts from 1/2 array in order to start at parents of leaves
+	// O(n) 
 	public void buildMaxHeap(ArrayList<Integer> arr) {
 		// startIndex of last parent
 		int startIndex = (int) Math.ceil(arr.size()/2) - 1;
@@ -82,16 +84,32 @@ public class Heap {
 		heap.add(8);
 		heap.add(1);
 		
+		ArrayList<Integer> unorderedHeap = new ArrayList<>();
+		unorderedHeap.add(4);
+		unorderedHeap.add(1);
+		unorderedHeap.add(3);
+		unorderedHeap.add(2);
+		unorderedHeap.add(16);
+		unorderedHeap.add(9);
+		unorderedHeap.add(10);
+		unorderedHeap.add(14);
+		unorderedHeap.add(8);
+		unorderedHeap.add(7);
+		
 		System.out.println(heap.toString());
 		
 		// Downheap to correct heap config
-		//cur.downHeap(heap, 1);
-		cur.buildMaxHeap(heap);
+		cur.downHeap(heap, 1);
 		System.out.println("Downheap to fix");
 		System.out.println(heap.toString());
 		
-		
-		
+		System.out.println("Unordered heap");
+		System.out.println(unorderedHeap.toString());
+		System.out.println("Fix using buildMaxHeap()");
+		cur.buildMaxHeap(unorderedHeap);
+		System.out.println("unordered heap sorted into max heap");
+		System.out.println(unorderedHeap);
+
 
 	}
 	
