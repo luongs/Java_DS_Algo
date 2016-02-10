@@ -1,17 +1,15 @@
 package Ch9_Priority_Queues;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 /**
- * Implementation of max pq using heap as a data structure 
+ * Implementation of max priority queue using heap as a data structure 
  *
  * @param <V>
  */
 public class Heap {
 	
 	// The heap is built using a dynamic Array to make insertion easier
-	// Index will serve as key and value at index will be value
 	ArrayList<Integer> heap;
 	int heapSize;
 	
@@ -94,6 +92,59 @@ public class Heap {
 		}
 	}
 	
+	/**
+	 * Functions relevant for a Priority Queue
+	 * In this case it will be a maximum priority queue
+	 * 
+	 */
+	
+	// O(1) to return maximum key in heap
+	public int peekMaximum(ArrayList<Integer> arr) {
+		return arr.get(0);
+	}
+	
+	// O(log n) to return and remove maximum in heap
+	public int extractMaximum(ArrayList<Integer> arr, int heapSize) {
+		if (heapSize<0) 
+			throw new IndexOutOfBoundsException("Heap Underflow");
+		int max = arr.get(0);
+		arr.set(0, heapSize-1);
+		// See heapSort for explanation behind heapSize decrement
+		heapSize--;
+		// Fix max heap property
+		downHeap(arr, 0, heapSize);
+		return max;
+	}
+	
+	// Increases key and places key in the heap's proper position 
+	// Helper function to insert()
+	public void increaseKey(ArrayList<Integer> arr, int index, int key) {
+		if (key<arr.get(index))
+			throw new IndexOutOfBoundsException("New key is smaller than current key");
+
+		// change temp arr value -999 into key
+		arr.set(index, key);
+		
+		// iterate up heap to place key at proper position
+		while (index>0 && (arr.get(parent(index)) < arr.get(index))) {
+			// swap value at index with value at parent 
+			int temp = arr.get(index);
+			arr.set(index, arr.get(parent(index)));
+			arr.set(parent(index), temp);
+			
+			index = parent(index);
+		}
+	}
+	
+	// Insert new key in priority queue
+	// O(log n)
+	public void insert(ArrayList<Integer> arr, int key) {
+		heapSize++;
+		int currentIndex = heapSize -1;
+		// add temporary key value in heap
+		arr.add(currentIndex, -999);
+		increaseKey(arr,currentIndex,key);
+	}
 	
 	public static void main(String[] args) {
 		Heap cur = new Heap();
@@ -128,6 +179,7 @@ public class Heap {
 		System.out.println("Fix with Downheap");
 		System.out.println(heap.toString());
 		System.out.println("===================================");
+		
 		System.out.println("Unordered heap");
 		System.out.println(unorderedHeap.toString());
 		System.out.println("Fix using buildMaxHeap()");
@@ -144,7 +196,25 @@ public class Heap {
 		System.out.println(heap);
 		System.out.println("===================================");
 
+		System.out.println("Re-initialize max heap");
+		cur.buildMaxHeap(heap, heap.size());
+		System.out.println(heap);
+		System.out.println("Current max: "+cur.peekMaximum(heap));
+		System.out.println("===================================");
 
+		System.out.println("Extract max: "+cur.extractMaximum(heap, heap.size()));
+		System.out.println("Max heap without max");
+		System.out.println(heap);
+		System.out.println("===================================");
+		
+		System.out.println("Original heap");
+		System.out.println(heap);
+		System.out.println("Insert key 20 into heap");
+		cur.insert(heap, 20);
+		System.out.println(heap);
+		
+		System.out.println("===================================");
+		
 	}
 	
 }
