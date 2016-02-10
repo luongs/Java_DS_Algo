@@ -15,6 +15,7 @@ public class Heap {
 	
 	public Heap() {
 		heap = new ArrayList<Integer>();
+		heapSize=0;
 	}
 	
 	public int parent(int key){
@@ -33,23 +34,25 @@ public class Heap {
 		return heapSize; 
 	}
 	
+	public void setHeapSize(int heapSize) {
+		this.heapSize = heapSize;
+	}
+	
 	// Check and move root value to proper position to maintain heap 
 	// property. Assume heap left and right have kept heap property. 
 	// O(log n)
-	public void downHeap(ArrayList<Integer> arr, int key, int heapSize) {
+	public void downHeap(ArrayList<Integer> arr, int key, int argHeapSize) {
 		int leftIndex = left(key);
 		int rightIndex = right(key);
 		int largestIndex;
-		// Subtract one since heap is zero-indexed
-		heapSize = heapSize-1;
-		
-		if (leftIndex<=heapSize && arr.get(leftIndex) > arr.get(key)){
+
+		if (leftIndex<=argHeapSize-1 && arr.get(leftIndex) > arr.get(key)){
 			largestIndex = leftIndex;
 		}
 		else{
 			largestIndex = key;
 		}
-		if (rightIndex<=heapSize && arr.get(rightIndex) > arr.get(largestIndex))
+		if (rightIndex<=argHeapSize-1 && arr.get(rightIndex) > arr.get(largestIndex))
 			largestIndex = rightIndex;
 		
 		if (largestIndex != key){
@@ -58,26 +61,26 @@ public class Heap {
 			arr.set(key, arr.get(largestIndex));
 			arr.set(largestIndex, temp);
 			// repeat to move key to proper position
-			downHeap(arr, largestIndex, heapSize);
+			downHeap(arr, largestIndex, argHeapSize);
 		}
 	}
 	
 	// Reorder unsorted heap into max heap
 	// Starts from 1/2 array in order to start at parents of leaves
 	// O(n) 
-	public void buildMaxHeap(ArrayList<Integer> arr, int heapSize) {
+	public void buildMaxHeap(ArrayList<Integer> arr, int argHeapSize) {
 		// startIndex of last parent
 		int startIndex = (int) Math.ceil(arr.size()/2) - 1;
 		
 		for (int i = startIndex; i>=0; i--){
-			this.downHeap(arr,i, heapSize);
+			downHeap(arr, i, argHeapSize);
 		}
 	}
 	
 	// Heapsort performed on a max heap
 	// O(n log n) in place
-	public void heapSort(ArrayList<Integer> arr, int heapSize) {
-		this.buildMaxHeap(arr, heapSize);
+	public void heapSort(ArrayList<Integer> arr, int argHeapSize) {
+		this.buildMaxHeap(arr, argHeapSize);
 		
 		for (int i = arr.size()-1; i>=0; i--) {
 			// swap values
@@ -87,8 +90,8 @@ public class Heap {
 			// Decrement heap size to exclude sorted values 
 			// from being moved. Those values are already at 
 			// the right position!
-			heapSize--;
-			this.downHeap(arr,0, heapSize);
+			argHeapSize--;
+			downHeap(arr,0, argHeapSize);
 		}
 	}
 	
@@ -104,13 +107,14 @@ public class Heap {
 	}
 	
 	// O(log n) to return and remove maximum in heap
-	public int extractMaximum(ArrayList<Integer> arr, int heapSize) {
-		if (heapSize<0) 
+	public int extractMaximum(ArrayList<Integer> arr, int argHeapSize) {
+		if (argHeapSize<0) 
 			throw new IndexOutOfBoundsException("Heap Underflow");
 		int max = arr.get(0);
-		arr.set(0, heapSize-1);
-		// See heapSort for explanation behind heapSize decrement
-		heapSize--;
+		arr.set(0, arr.get(argHeapSize-1));
+		arr.remove(arr.get(argHeapSize-1));
+		setHeapSize(heapSize - 1);
+		//heapSize--;
 		// Fix max heap property
 		downHeap(arr, 0, heapSize);
 		return max;
@@ -138,11 +142,13 @@ public class Heap {
 	
 	// Insert new key in priority queue
 	// O(log n)
-	public void insert(ArrayList<Integer> arr, int key) {
-		heapSize++;
-		int currentIndex = heapSize -1;
+	public void insert(ArrayList<Integer> arr, int key, int argHeapSize) {
+		
 		// add temporary key value in heap
-		arr.add(currentIndex, -999);
+		arr.add(-999);
+		argHeapSize++;
+		
+		int currentIndex = argHeapSize-1;
 		increaseKey(arr,currentIndex,key);
 	}
 	
@@ -196,7 +202,7 @@ public class Heap {
 		System.out.println(heap);
 		System.out.println("===================================");
 
-		System.out.println("Re-initialize max heap");
+		System.out.println("Re-initialize max heap after heapsort");
 		cur.buildMaxHeap(heap, heap.size());
 		System.out.println(heap);
 		System.out.println("Current max: "+cur.peekMaximum(heap));
@@ -210,7 +216,7 @@ public class Heap {
 		System.out.println("Original heap");
 		System.out.println(heap);
 		System.out.println("Insert key 20 into heap");
-		cur.insert(heap, 20);
+		cur.insert(heap, 20, heap.size());
 		System.out.println(heap);
 		
 		System.out.println("===================================");
